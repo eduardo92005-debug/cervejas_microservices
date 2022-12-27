@@ -4,27 +4,29 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: mydatabase
+      MYSQL_DATABASE: beer_api
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3307:3307"
   web:
     build:
       context: .
       dockerfile: API_Playlist/Dockerfile/Dockerfile
-    command: python3 run.py
+    command: python3 API_Playlist/run.py
     volumes:
-      - .:/API_Playlist
+      - .:/app
     ports:
       - "5000:5000"
   web_2:
     build:
       context: .
       dockerfile: API_Cervejas/Dockerfile/Dockerfile
-    command: python3 run.py
+    command: python3 API_Cervejas/run.py
     volumes:
-      - .:/API_Cervejas
+      - .:/app
     ports:
       - "4444:4444"
     depends_on:
